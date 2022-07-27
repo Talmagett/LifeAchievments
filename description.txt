@@ -1,0 +1,19 @@
+https://drawsql.app/talmagettgames/diagrams/test
+
+as cards bootstrap
+
+ID
+Category
+AchievmentName
+Description
+Award
+Notes
+Max //if 0 incremental,1 bool, 40 counting
+Progress
+State
+AchievedIcon
+UnachievedIcon
+
+Category
+ID
+Name

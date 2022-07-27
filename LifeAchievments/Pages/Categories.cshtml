@@ -1,0 +1,23 @@
+﻿@page
+@model LifeAchievments.Pages.CategoriesModel
+@{
+}
+
+<h1>Categories</h1>
+
+<div class="text-left container m-6">
+	<h1>Create</h1>
+	<form method="post" class="mx-auto mt-5 mb-5 px-5 pt-5 pb-5 rounded-5 bg-light col-4">
+		<input type="text" asp-for="NewCategoryName" placeholder="New Category" />
+		<button class="btn btn-danger mt-1 rounded" type="submit">+</button>
+	</form>
+</div>
+
+<div class="container">
+	<div class="row">
+		@foreach (var category in Model.Categories)
+		{
+			<p>@category.Name</p>
+		}
+	</div>
+</div>

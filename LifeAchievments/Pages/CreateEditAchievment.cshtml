@@ -1,0 +1,19 @@
+﻿@page
+@model LifeAchievments.Pages.CreateEditAchievmentModel
+@{
+}
+
+<div class="text-left container m-6">
+  <h1>Create</h1>
+  <form method="post" class="mx-auto mt-5 mb-5 px-5 pt-5 pb-5 rounded-5 bg-light col-4">
+    <input type="text" asp-for="EditingAchievment.Name" placeholder="Name"/>
+    <input type="text" asp-for="EditingAchievment.Description" placeholder="Description"/>
+    <input type="text" asp-for="EditingAchievment.Award" placeholder="Award"/>
+    <input type="text" asp-for="EditingAchievment.Comment" placeholder="Comment"/>
+    <input type="number" asp-for="EditingAchievment.MaxAmount" placeholder="Maximum Amount"/>
+    <input type="number" asp-for="EditingAchievment.Progress" placeholder="Current Amount"/>
+    <input type="file" id="img" name="img" accept="image/*" asp-for="EditingAchievment.Progress" placeholder="Achieved Icon"/>
+    <input type="file" id="img" name="img" accept="image/*" asp-for="EditingAchievment.Progress" placeholder="Unachieved Icon"/>
+    <button class="btn btn-primary mt-1" type="submit">Create</button>
+  </form>
+</div>
