@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "MgfanZZfe8iKwhf+48ykb9TwFLbMfIE3gSmpqb9+fe4=",
+  "Hash": "BP/7qa0eHi5vr1bTvjQamsR4zW9XLjw85LsbiaAvek0=",
   "Source": "LifeAchievments",
   "BasePath": "_content/LifeAchievments",
   "Mode": "Default",
@@ -85,12 +85,12 @@
       "OriginalItemSpec": "wwwroot\\favicon.ico"
     },
     {
-      "Identity": "D:\\WebProjects\\LifeAchievments\\LifeAchievments\\wwwroot\\js\\site.js",
+      "Identity": "D:\\WebProjects\\LifeAchievments\\LifeAchievments\\wwwroot\\images\\award.png",
       "SourceId": "LifeAchievments",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\WebProjects\\LifeAchievments\\LifeAchievments\\wwwroot\\",
       "BasePath": "_content/LifeAchievments",
-      "RelativePath": "js/site.js",
+      "RelativePath": "images/award.png",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -99,7 +99,24 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\js\\site.js"
+      "OriginalItemSpec": "wwwroot\\images\\award.png"
+    },
+    {
+      "Identity": "D:\\WebProjects\\LifeAchievments\\LifeAchievments\\wwwroot\\js\\category.js",
+      "SourceId": "LifeAchievments",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\WebProjects\\LifeAchievments\\LifeAchievments\\wwwroot\\",
+      "BasePath": "_content/LifeAchievments",
+      "RelativePath": "js/category.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\category.js"
     },
     {
       "Identity": "D:\\WebProjects\\LifeAchievments\\LifeAchievments\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
@@ -1069,23 +1086,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
-    },
-    {
-      "Identity": "D:\\WebProjects\\LifeAchievments\\LifeAchievments\\wwwroot\\lib\\Tasks\\Scheduler.rake",
-      "SourceId": "LifeAchievments",
-      "SourceType": "Discovered",
-      "ContentRoot": "D:\\WebProjects\\LifeAchievments\\LifeAchievments\\wwwroot\\",
-      "BasePath": "_content/LifeAchievments",
-      "RelativePath": "lib/Tasks/Scheduler.rake",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\lib\\Tasks\\Scheduler.rake"
     }
   ]
 }

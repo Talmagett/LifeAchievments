@@ -2,50 +2,88 @@
 @model LifeAchievments.Pages.AchievmentsModel
 @{
 }
-<h1>Achievments</h1>
-	Categories
-<div class="container">
-	<ul class="list-group">
-		<div class="row">
-			@foreach (var category in Model.Categories)
-			{
-			<li class="list-group-item">
-				<input class="form-check-input me-1" type="checkbox" value="" id="@category.Id">
-				<label class="form-check-label stretched-link" for="@category.Id">@category.Name</label>
-			</li>
-			}
-	</ul>
 
-</div>
-
-<div class="row row-cols-1 row-cols-md-3 g-4">
-
-	@foreach (var achievment in Model.Achievments)
-	{
-		<div class="col">
-			<div class="card h-100">
-				<img src="..." class="card-img-top" alt="...">
-				<div class="card-body">
-					<h5 class="card-title">@achievment.Name</h5>
-					<p class="card-text">@achievment.Description</p>
-					@if (@achievment.State == Models.State.Uncompleted)
-					{
-						var progress = @achievment.Progress * 100 / @achievment.MaxAmount;
-						<div class="progress mr-4">
-							<div class="progress-bar" role="progressbar" aria-label="Basic example" style="width: @progress%" aria-valuenow="@progress" aria-valuemin="0" aria-valuemax="100"></div>
-						</div>
-						<div class="align-right">
-							@achievment.Progress/@achievment.MaxAmount
-						</div>
-					}
-				</div>
-			</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Side Navigation Bar</title>
+	<link rel="stylesheet" href="styles.css">
+	<script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+</head>
+<body>
+	<div class="wrapper">
+		<div class="nav navbar container sidebar  ">
+			<h3 class="px-2 text-center">Categories</h3>
+			<ul class="flex-column w-100 mb-auto">
+				@foreach (var category in Model.Categories)
+				{
+					<li class="row nav-item ">
+						<input class="btn btn-primary" type="button" value="@category.Name" id="@category.Id">
+					</li>
+				}
+			</ul>
+			<!--</div>-->
 		</div>
-	}
-</div>
-<div>
-	<!--<a class="btn btn-danger"  asp-area="" asp-page="/CreateEditAchievment" asp-route-EditingAchievment=""></a>-->
-	<a class="btn btn-danger" asp-area="" asp-page="/CreateEditAchievment">+</a>
-</div>
+		<main class="main_content">
+			<div class="mx-auto rounded-5 d-flex align-items-center justify-content-center align-content-between">
+				<h1>Achievments</h1>
+				<a class="btn btn-danger" asp-area="" asp-page="/CreateEditAchievment">+</a>
+			</div>
 
-<!--Toasts-->
+			<div class="row row-cols-lg-6 g-4 mx-1">
+				@foreach (var achievment in Model.Achievments)
+				{
+					<div class="col-lg-6">
+						<button class="card h-100 w-100">
+							<img src="~/images/award.png" class="card-img-top rounded" width="100%" alt="">
+							<div class="card-body bg-dark">
+								<h5 class="card-title">@achievment.Name</h5>
+								<p class="card-text">@achievment.Description</p>
+								@if (@achievment.State == Models.State.Uncompleted)
+								{
+									@if (@achievment.MaxAmount > 1)
+									{
+										var progress = @achievment.Progress * 100 / @achievment.MaxAmount;
+										<div>
+											<div class="progress mr-4">
+												<div class="progress-bar" role="progressbar" aria-label="Basic example" style="width: @progress" aria-valuenow="@progress" aria-valuemin="0" aria-valuemax="100"></div>
+											</div>
+											<div class="text-center text-primary">
+												@achievment.Progress/@achievment.MaxAmount
+											</div>
+										</div>
+									}
+									else
+									{
+										<div class="text-center text-secondary">
+											Uncompleted
+										</div>
+									}
+								}
+								else
+								@if (@achievment.State == Models.State.Incremental)
+								{
+									<div class="text-center text-warning">
+										@achievment.Progress
+									</div>
+								}
+								else
+								{
+									<div class="text-center text-success">
+										Completed
+									</div>
+								}
+							</div>
+						</button>
+					</div>
+				}
+			</div>
+		</main>
+
+
+
+	</div>
+
+</body>
+</html>

@@ -3,17 +3,65 @@
 @{
 }
 
-<div class="text-left container m-6">
-  <h1>Create</h1>
-  <form method="post" class="mx-auto mt-5 mb-5 px-5 pt-5 pb-5 rounded-5 bg-light col-4">
-    <input type="text" asp-for="EditingAchievment.Name" placeholder="Name"/>
-    <input type="text" asp-for="EditingAchievment.Description" placeholder="Description"/>
-    <input type="text" asp-for="EditingAchievment.Award" placeholder="Award"/>
-    <input type="text" asp-for="EditingAchievment.Comment" placeholder="Comment"/>
-    <input type="number" asp-for="EditingAchievment.MaxAmount" placeholder="Maximum Amount"/>
-    <input type="number" asp-for="EditingAchievment.Progress" placeholder="Current Amount"/>
-    <input type="file" id="img" name="img" accept="image/*" asp-for="EditingAchievment.Progress" placeholder="Achieved Icon"/>
-    <input type="file" id="img" name="img" accept="image/*" asp-for="EditingAchievment.Progress" placeholder="Unachieved Icon"/>
-    <button class="btn btn-primary mt-1" type="submit">Create</button>
-  </form>
-</div>
+<body class="bg-dark text-danger">
+	<div class="text-left m-6 px-6 container w-75" style="max-width: 750px;">
+
+		if(@Model.IsEdit){
+		<h1 class="text-center">
+			Edit
+		</h1>
+		}else
+		<h1 class="text-center">
+			Create
+		</h1>
+
+		<form method="post">
+
+			<div class="row mb-3">
+				<label for="inputName" class="ml-5 col-sm-2 col-form-label text-white">Name</label>
+				<div class="col-sm-10">
+					<input class="form-control" id="inputName" type="text" asp-for="EditingAchievment.Name" required />
+				</div>
+			</div>
+
+			<div class="row mb-3">
+				<label for="inputDescription" class="ml-5 col-sm-2 col-form-label text-white">Description</label>
+
+				<div class="form-group col-sm-10">
+					<textarea class="form-control" id="inputDescription" rows="5" id="comment" asp-for="EditingAchievment.Description" required style="height: 100px; resize:none;">
+					</textarea>
+				</div>
+			</div>
+
+			<div class="row mb-3">
+				<label for="inputAward" class="ml-5 col-sm-2 col-form-label text-white">Award</label>
+				<div class="col-sm-10">
+					<input class="form-control" id="inputAward" type="text" asp-for="EditingAchievment.Award" />
+				</div>
+			</div>
+
+			<div class="row mb-3">
+				<label for="inputComment" class="ml-5 col-sm-2 col-form-label text-white">Comment</label>
+				<div class="col-sm-10">
+					<input class="form-control" id="inputComment" type="text" asp-for="EditingAchievment.Comment" />
+				</div>
+			</div>
+
+			<div class="row mb-6">
+				<label for="inputMaxAmount" class="ml-5 col-sm-2 col-form-label text-white">MaxAmount</label>
+				<div class="col-sm-10">
+					<input class="form-control" id="inputMaxAmount" type="number" asp-for="EditingAchievment.MaxAmount" />
+				</div>
+
+				<label for="inputProgress" class="ml-5 col-sm-2 col-form-label text-white">Progress</label>
+				<div class="col-sm-10">
+					<input class="form-control" id="inputProgress" type="number" asp-for="EditingAchievment.Progress" />
+				</div>
+			</div>
+
+			<input class="input-group" type="file" id="img" name="img" accept="image/*" asp-for="EditingAchievment.Progress" placeholder="Achieved Icon" />
+			<input class="input-group" type="file" id="img" name="img" accept="image/*" asp-for="EditingAchievment.Progress" placeholder="Unachieved Icon" />
+			<button class="btn btn-primary mt-1" type="submit">Create</button>
+		</form>
+	</div>
+</body>

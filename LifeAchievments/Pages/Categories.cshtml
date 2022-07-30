@@ -3,21 +3,83 @@
 @{
 }
 
-<h1>Categories</h1>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-<div class="text-left container m-6">
-	<h1>Create</h1>
-	<form method="post" class="mx-auto mt-5 mb-5 px-5 pt-5 pb-5 rounded-5 bg-light col-4">
-		<input type="text" asp-for="NewCategoryName" placeholder="New Category" />
-		<button class="btn btn-danger mt-1 rounded" type="submit">+</button>
+<div class="container">
+	<form method="post">
+		<div class="mx-5 rounded-5 d-flex justify-content-center row m-2">
+			<input class="w-50" type="text" asp-for="NewCategoryName" placeholder="New Category" required style="height: 50px;" />
+			<button class="btn btn-danger rounded" type="submit" style="width: 50px; height: 50px">+</button>
+		</div>
 	</form>
 </div>
 
-<div class="container">
-	<div class="row">
-		@foreach (var category in Model.Categories)
+<div class="container row d-inline-flex justify-content-between">
+	@{
+		var AchievmentsCount = Model.Categories.Count;
+		var cycle = AchievmentsCount / 4;
+
+			@if (AchievmentsCount % 4 > 0)
 		{
-			<p>@category.Name</p>
+			cycle++;
 		}
+	}
+	@for (int i = 0; i < cycle; i++)
+	{
+		<ul class="list-group list-group-horizontal row my-1 gx-1">
+			@for (int j = 0; j < 4; j++)
+			{
+				@if ((i * 4 + j) >= AchievmentsCount) break;
+				<li class="list-group-item bg-black col-lg-1 d-inline-flex justify-content-between gx-1 mx-1"
+			style="width: 24%">
+					<div class="d-flex text-white">
+						<h2 class="modal-text">@Model.Categories[(i*4 + j)].Name</h2>
+					</div>
+					<button id="@Model.Categories[(i*4 + j)].Id" class="btn btn-info rounded-5"
+					type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"
+					onclick="setEditingCategory('this');setName()">
+					</button>
+				</li>
+			}
+		</ul>
+	}
+</div>
+
+<!-- Modal -->
+<div class="modal fade category-change-modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header text-dark">
+				<h5 class="modal-title" id="exampleModalLabel">Edit</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<input id="changing-category-name" type="text" value="" />
+				<button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="delete()">X</button>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cansel</button>
+				<button type="button" class="btn btn-primary">Save changes</button>
+			</div>
+		</div>
 	</div>
 </div>
+
+<script>
+	document.getElementById("@Model.Categories[(i*4 + j)].Id").addEventListener("click", displayDate);
+
+	element.addEventListener("click", myFunction);
+
+function myFunction() {
+  document.getElementById("demo").innerHTML = "Hello World";
+}
+
+	function setEditingCategory(element) {
+        console.log(element.id);
+		@Model.EditingCategory.Id=element.id;
+	}
+
+	function setName() {
+		document.getElementById('changing-category-name').value = "@Model.EditingCategory.Name";
+	}
+</script>
