@@ -19,19 +19,7 @@ body {
     color: white;
 }
 
-.wrapper {
-    display: flex;
-    position: relative;
+.sidebar {
+    width: 280px;
+    margin-right: 20px;
 }
-    .wrapper .sidebar {
-        left: 20px;
-        top: 70px;
-        bottom: 70px;
-        width: 200px;
-        padding: 0px 0px 0px 0px;
-        position: fixed;
-    }
-
-    .wrapper .main_content {
-        margin-left: 200px;
-    }

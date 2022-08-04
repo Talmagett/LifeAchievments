@@ -8,7 +8,10 @@ namespace LifeAchievments.Pages
 	public class CreateEditAchievmentModel : PageModel
 	{
 		[BindProperty(SupportsGet = true)]
-		public Achievment EditingAchievment { get; set; }
+		public static int ChangingAchievmentId { get; set; } = -1;
+
+		[BindProperty(SupportsGet = true)]
+		public Achievment NewCreatingAchievment { get; set; }
 
 		[BindProperty(SupportsGet = true)]
 		public bool IsEdit { get; set; }
@@ -19,23 +22,23 @@ namespace LifeAchievments.Pages
 		}
 		public void OnGet()
 		{
-			if (EditingAchievment != null)
+			if (NewCreatingAchievment != null)
 			{
 				//Fill field
 			}
 		}
 		public void OnPost()
 		{
-			if (EditingAchievment.MaxAmount <= 0)
-				EditingAchievment.State = State.Incremental;
+			if (NewCreatingAchievment.MaxAmount <= 0)
+				NewCreatingAchievment.State = State.Incremental;
 			else
 			{
-				if (EditingAchievment.Progress < EditingAchievment.MaxAmount)
-					EditingAchievment.State = State.Uncompleted;
-				else EditingAchievment.State = State.Completed;
+				if (NewCreatingAchievment.Progress < NewCreatingAchievment.MaxAmount)
+					NewCreatingAchievment.State = State.Uncompleted;
+				else NewCreatingAchievment.State = State.Completed;
 			}
 
-			_context.AchievmentsCollection.Add(EditingAchievment);
+			_context.AchievmentsCollection.Add(NewCreatingAchievment);
 			_context.SaveChanges();
 		}
 	}

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "BP/7qa0eHi5vr1bTvjQamsR4zW9XLjw85LsbiaAvek0=",
+  "Hash": "VVeRAcDTRoVcXpaUS1d0xZSc5kRSCCO+ZYzAyhaI8TM=",
   "Source": "LifeAchievments",
   "BasePath": "_content/LifeAchievments",
   "Mode": "Default",
@@ -102,12 +102,12 @@
       "OriginalItemSpec": "wwwroot\\images\\award.png"
     },
     {
-      "Identity": "D:\\WebProjects\\LifeAchievments\\LifeAchievments\\wwwroot\\js\\category.js",
+      "Identity": "D:\\WebProjects\\LifeAchievments\\LifeAchievments\\wwwroot\\js\\site.js",
       "SourceId": "LifeAchievments",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\WebProjects\\LifeAchievments\\LifeAchievments\\wwwroot\\",
       "BasePath": "_content/LifeAchievments",
-      "RelativePath": "js/category.js",
+      "RelativePath": "js/site.js",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -116,7 +116,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\js\\category.js"
+      "OriginalItemSpec": "wwwroot\\js\\site.js"
     },
     {
       "Identity": "D:\\WebProjects\\LifeAchievments\\LifeAchievments\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",

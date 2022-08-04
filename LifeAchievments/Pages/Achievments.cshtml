@@ -2,40 +2,36 @@
 @model LifeAchievments.Pages.AchievmentsModel
 @{
 }
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>Side Navigation Bar</title>
-	<link rel="stylesheet" href="styles.css">
-	<script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
-</head>
 <body>
-	<div class="wrapper">
-		<div class="nav navbar container sidebar  ">
-			<h3 class="px-2 text-center">Categories</h3>
-			<ul class="flex-column w-100 mb-auto">
+	<div class="d-flex container pb-3">
+		<div class="container sidebar">
+			<div class="d-flex align-items-center justify-content-center align-content-between p-0">
+				<h3 class="col">Categories  </h3>
+				<a class="btn btn-danger" asp-page="/CreateEditCategory" asp-page-handler="-1">+</a>
+			</div>
+			<ul class="mt-4">
 				@foreach (var category in Model.Categories)
 				{
-					<li class="row nav-item ">
-						<input class="btn btn-primary" type="button" value="@category.Name" id="@category.Id">
+					<li class="row mb-1 d-flex">
+						<input class="btn btn-primary col" type="button" value="@category.Name" id="@category.Id">
+						<a class="btn btn-danger col-1" asp-page="/CreateEditCategory" asp-page-handler="@category.Id" style="height: 100% ">/</a>
 					</li>
 				}
 			</ul>
-			<!--</div>-->
 		</div>
-		<main class="main_content">
-			<div class="mx-auto rounded-5 d-flex align-items-center justify-content-center align-content-between">
-				<h1>Achievments</h1>
-				<a class="btn btn-danger" asp-area="" asp-page="/CreateEditAchievment">+</a>
+
+
+		<main class="container pb-3">
+			<div class="d-flex align-items-center justify-content-center align-content-between mb-4">
+				<h1 class="col">Achievments</h1>
+				<a class="btn btn-danger" asp-area="" asp-page="/CreateEditAchievment" asp-page-handler="-1">+</a>
 			</div>
 
-			<div class="row row-cols-lg-6 g-4 mx-1">
+			<div class="row row-cols-md-2 g-2 mx-1">
 				@foreach (var achievment in Model.Achievments)
 				{
-					<div class="col-lg-6">
-						<button class="card h-100 w-100">
+					<div class="col-md-2" style="width: 12rem;">
+						<button class="card h-100 w-100" data-bs-toggle="modal" data-bs-target="#achievment-modal" data-bs-whatever="@achievment.Id" asp-page-handler="@achievment.Id">
 							<img src="~/images/award.png" class="card-img-top rounded" width="100%" alt="">
 							<div class="card-body bg-dark">
 								<h5 class="card-title">@achievment.Name</h5>
@@ -80,10 +76,73 @@
 				}
 			</div>
 		</main>
-
-
-
 	</div>
 
+	<div class="modal fade" id="achievment-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="ModalName"></h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<input class="achievment-progress" type="number" asp-for="EditingAchievmentProgress" value="" />
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-primary edit-achievment-id" id="" asp-page="/CreateEditAchievment" asp-page-handler="0" onclick="editAchievment()">Edit</button>
+					<button type="submit" class="btn btn-primary" onclick="formSubmit()">Save</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
-</html>
+
+<script>
+	const achievmentModal = document.getElementById('achievment-modal')
+	achievmentModal.addEventListener('show.bs.modal', event => {
+		// Button that triggered the modal
+		const button = event.relatedTarget
+		// Extract info from data-bs-* attributes
+		const categoryId = button.getAttribute('data-bs-whatever')
+
+		// If necessary, you could initiate an AJAX request here
+		// and then do the updating in a callback.
+		//
+		// Update the modal's content.
+		const modalTitle = achievmentModal.querySelector('.modal-title')
+		const modalBodyAchievmentProgressInput = achievmentModal.querySelector('.modal-body .achievment-progress')
+		console.log(categoryId)
+
+		achievmentModal.querySelector(".edit-achievment-id").setAttribute("asp-page-handler", categoryId)
+		var id = achievmentModal.querySelector(".edit-achievment-id").getAttribute("asp-page-handler");
+		$.ajax({
+			url: '/Achievments?handler=ProgressOfEditingId',
+			type: 'get',
+			data: {
+				"id": id
+			},
+			beforeSend: function(xhr) {
+				xhr.setRequestHeader("XSRF-TOKEN",
+					$('input:hidden[name="__RequestVerificationToken"]').val());
+			},
+			success: function(response) {
+				console.log("response" + response)
+
+				modalBodyAchievmentProgressInput.value = response
+			}
+		})
+			.done(function(result) {
+				console.log("result" + result)
+				//… rest of code left out
+			});
+	})
+	function formSubmit() {
+		const submitButton = document.getElementById("achievmentForm");
+		console.log(submitButton);
+	}
+	function editAchievment() {
+
+	}
+																			//ajax get check
+																			//url get
+</script>

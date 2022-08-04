@@ -19,12 +19,12 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWNoaWV2bWVudHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/WebProjects/LifeAchievments/LifeAchievments/Pages/Categories.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2F0ZWdvcmllcy5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
 [D:/WebProjects/LifeAchievments/LifeAchievments/Pages/CreateEditAchievment.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3JlYXRlRWRpdEFjaGlldm1lbnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/WebProjects/LifeAchievments/LifeAchievments/Pages/CreateEditCategory.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3JlYXRlRWRpdENhdGVnb3J5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/WebProjects/LifeAchievments/LifeAchievments/Pages/Error.cshtml]
