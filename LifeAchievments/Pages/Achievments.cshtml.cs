@@ -9,41 +9,66 @@ namespace LifeAchievments.Pages
     {
         public List<Category> Categories { get; set; }
         public List<Achievment> Achievments { get; set; }
-
-        [BindProperty(SupportsGet = true)]
-        public int EditingAchievmentId { get; set; }
-        [BindProperty(SupportsGet = true)]
-        public int EditingAchievmentProgress { get; set; }
-
         private readonly ApplicationDbContext _context;
         public AchievmentsModel(ApplicationDbContext context)
         {
             _context = context;
-            Categories=_context.CategoryCollection.ToList();
-            Achievments= _context.AchievmentsCollection.ToList();
+            Categories = _context.CategoryCollection.OrderBy(t => t.Name).ToList();
+            Achievments = _context.AchievmentsCollection.OrderBy(t=>t.Name).ToList();
         }
-        public void OnGet()
+        public IActionResult OnGetDeleteAchievment(int id)
         {
-        }
-        public void OnPost()
-        {
-            if (GetAchievmentById(EditingAchievmentId) != null)
-            {
-                _context.AchievmentsCollection.Where(achievment => achievment.Id == EditingAchievmentId).FirstOrDefault().Progress= EditingAchievmentProgress;
-            }
+            Achievment? achievmentInDb = GetAchievmentById(id);
+            if (achievmentInDb != null)
+                _context.AchievmentsCollection.Remove(achievmentInDb);
+            Achievment? achievment = Achievments.Where(achievment => achievment.Id == id).FirstOrDefault();
+            if (achievment != null)
+                Achievments.Remove(achievment);
+            _context.SaveChanges();
+            return new JsonResult("successfully deleted");
         }
         public IActionResult OnGetProgressOfEditingId(int id)
         {
-            EditingAchievmentId = id;
-
-            Achievment? achievment = GetAchievmentById(EditingAchievmentId);
+            Achievment? achievment = GetAchievmentById(id);
             if (achievment != null)
-                EditingAchievmentProgress = achievment.Progress;
-            return new JsonResult(EditingAchievmentProgress);
+                return new JsonResult(achievment);
+            else
+                return new JsonResult(new Achievment());
         }
-        private Achievment? GetAchievmentById(int id) 
+        public IActionResult OnGetSetProgress(int id, int progress)
         {
-            return Achievments.Where(achievment => achievment.Id == id).FirstOrDefault();
+            int editingProgress = progress;
+            int x = id + progress;
+            Achievment achievmentInDb = GetAchievmentById(id);
+            if (achievmentInDb != null)
+            {
+                if (achievmentInDb.MaxAmount == 0)
+                {
+                    editingProgress = Math.Max(0, editingProgress);
+                    achievmentInDb.State = State.Incremental;
+                }
+                else
+                {
+                    editingProgress = Math.Clamp(editingProgress, 0, achievmentInDb.MaxAmount);
+
+                    if (editingProgress < achievmentInDb.MaxAmount)
+                        achievmentInDb.State = State.Uncompleted;
+                    else achievmentInDb.State = State.Completed;
+                }
+            }
+            achievmentInDb.Progress = editingProgress;
+
+
+            _context.SaveChanges();
+            Achievment achievment = Achievments.Where(achievment => achievment.Id == id).FirstOrDefault();
+            if (achievment != null)
+                achievment.Progress = editingProgress;
+            return new JsonResult(achievmentInDb.Progress);
+        }
+
+        private Achievment? GetAchievmentById(int id)
+        {
+            return _context.AchievmentsCollection.Where(achievment => achievment.Id == id).FirstOrDefault();
         }
     }
 }

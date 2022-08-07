@@ -2,40 +2,49 @@
 @model LifeAchievments.Pages.AchievmentsModel
 @{
 }
+
+<script src="~/js/Achievments.js" defer></script></>
+
 <body>
 	<div class="d-flex container pb-3">
 		<div class="container sidebar">
 			<div class="d-flex align-items-center justify-content-center align-content-between p-0">
 				<h3 class="col">Categories  </h3>
-				<a class="btn btn-danger" asp-page="/CreateEditCategory" asp-page-handler="-1">+</a>
 			</div>
 			<ul class="mt-4">
 				@foreach (var category in Model.Categories)
 				{
 					<li class="row mb-1 d-flex">
 						<input class="btn btn-primary col" type="button" value="@category.Name" id="@category.Id">
-						<a class="btn btn-danger col-1" asp-page="/CreateEditCategory" asp-page-handler="@category.Id" style="height: 100% ">/</a>
 					</li>
 				}
 			</ul>
 		</div>
 
-
 		<main class="container pb-3">
 			<div class="d-flex align-items-center justify-content-center align-content-between mb-4">
-				<h1 class="col">Achievments</h1>
-				<a class="btn btn-danger" asp-area="" asp-page="/CreateEditAchievment" asp-page-handler="-1">+</a>
+				<h1 class="col" >Achievments</h1>
+				<input class="form-control mx-5 searching-input" id="" type="text" placeholder="Search.." onkeyup="filterByName()">
+				<button class="btn btn-danger" onclick="createAchievment()">+</button>
 			</div>
-
-			<div class="row row-cols-md-2 g-2 mx-1">
+			<div class="row row-cols-md-2 g-2 mx-1 " id="achievments">
 				@foreach (var achievment in Model.Achievments)
 				{
 					<div class="col-md-2" style="width: 12rem;">
-						<button class="card h-100 w-100" data-bs-toggle="modal" data-bs-target="#achievment-modal" data-bs-whatever="@achievment.Id" asp-page-handler="@achievment.Id">
-							<img src="~/images/award.png" class="card-img-top rounded" width="100%" alt="">
+						@{
+							var cardClassName = "card h-100 w-100 bg-white achievment-card ";
+							if (@achievment.State == Models.State.Uncompleted)
+								cardClassName += " achievment-card-uncompleted";
+						}
+						<button class=@cardClassName id="cardId:@achievment.Id" data-bs-toggle="modal" data-bs-target="#achievment-modal" data-bs-whatever="@achievment.Id" asp-page-handler="@achievment.Id">
+							@{
+								var iconClassName = "card-img-top";
+								if (@achievment.State == Models.State.Uncompleted)
+									iconClassName += " achievment-state-uncompleted";
+									<img src="~/images/@achievment.AchievedIconName" class=@iconClassName + width="100%" alt="~/images/award" style="object-fit: contain; max-height: 174px" />
+							}
 							<div class="card-body bg-dark">
 								<h5 class="card-title">@achievment.Name</h5>
-								<p class="card-text">@achievment.Description</p>
 								@if (@achievment.State == Models.State.Uncompleted)
 								{
 									@if (@achievment.MaxAmount > 1)
@@ -43,7 +52,8 @@
 										var progress = @achievment.Progress * 100 / @achievment.MaxAmount;
 										<div>
 											<div class="progress mr-4">
-												<div class="progress-bar" role="progressbar" aria-label="Basic example" style="width: @progress" aria-valuenow="@progress" aria-valuemin="0" aria-valuemax="100"></div>
+												<div class="progress-bar" role="progressbar" aria-label="Basic example" style="width: @progress%" aria-valuenow="@progress" aria-valuemin="0" aria-valuemax="100">
+												</div>
 											</div>
 											<div class="text-center text-primary">
 												@achievment.Progress/@achievment.MaxAmount
@@ -79,70 +89,46 @@
 	</div>
 
 	<div class="modal fade" id="achievment-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-dialog modal-lg modal-dialog-centered">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="ModalName"></h5>
+					<h4 class="modal-title text-black"></h4>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
-				<div class="modal-body">
-					<input class="achievment-progress" type="number" asp-for="EditingAchievmentProgress" value="" />
+				<div class="modal-body row m-1">
+					<div class="col m-1">
+						<div class="row mb-1">
+							<textarea class="form-control achievment-input-description" rows="5" type="text" readonly disabled style="height: 100px; resize:none;">
+							</textarea>
+						</div>
+						<div class="row mb-1">
+							<input class="form-control achievment-input-award" type="text" value="Disabled readonly input" aria-label="Disabled input example" disabled readonly>
+						</div>
+						<div class="row mb-1">
+							<textarea class="form-control achievment-input-comment" rows="4" type="text" readonly disabled style="height: 80px; resize:none;">
+							</textarea>
+						</div>
+
+					</div>
+					<div class="col-4 m-1">
+						<div class="row">
+							<img src="~/images/award.png" class="achievment-icon mx-auto" alt="" width="100%" style="object-fit: contain; max-height: 174px">
+						</div>
+						<div class="row">
+							<h6 class="text-black">Max amount</h6>
+							<input class="achievment-input-maxAmount mb-2" type="number" value="" readonly disabled />
+
+							<h6 class="text-black">Progress</h6>
+							<input class="achievment-input-progress" min="0" max="" type="number" value="" />
+						</div>
+					</div>
 				</div>
 				<div class="modal-footer">
-					<button class="btn btn-primary edit-achievment-id" id="" asp-page="/CreateEditAchievment" asp-page-handler="0" onclick="editAchievment()">Edit</button>
-					<button type="submit" class="btn btn-primary" onclick="formSubmit()">Save</button>
+					<button type="button" class="btn btn-danger delete-achievment-id align-self-start" onclick="deleteAchievment()">Delete</button>
+					<button type="button" class="btn btn-primary edit-achievment-id" onclick="editAchievment()">Edit</button>
+					<button class="btn btn-primary" onclick="saveProgressChanges()">Save</button>
 				</div>
 			</div>
 		</div>
 	</div>
 </body>
-
-<script>
-	const achievmentModal = document.getElementById('achievment-modal')
-	achievmentModal.addEventListener('show.bs.modal', event => {
-		// Button that triggered the modal
-		const button = event.relatedTarget
-		// Extract info from data-bs-* attributes
-		const categoryId = button.getAttribute('data-bs-whatever')
-
-		// If necessary, you could initiate an AJAX request here
-		// and then do the updating in a callback.
-		//
-		// Update the modal's content.
-		const modalTitle = achievmentModal.querySelector('.modal-title')
-		const modalBodyAchievmentProgressInput = achievmentModal.querySelector('.modal-body .achievment-progress')
-		console.log(categoryId)
-
-		achievmentModal.querySelector(".edit-achievment-id").setAttribute("asp-page-handler", categoryId)
-		var id = achievmentModal.querySelector(".edit-achievment-id").getAttribute("asp-page-handler");
-		$.ajax({
-			url: '/Achievments?handler=ProgressOfEditingId',
-			type: 'get',
-			data: {
-				"id": id
-			},
-			beforeSend: function(xhr) {
-				xhr.setRequestHeader("XSRF-TOKEN",
-					$('input:hidden[name="__RequestVerificationToken"]').val());
-			},
-			success: function(response) {
-				console.log("response" + response)
-
-				modalBodyAchievmentProgressInput.value = response
-			}
-		})
-			.done(function(result) {
-				console.log("result" + result)
-				//… rest of code left out
-			});
-	})
-	function formSubmit() {
-		const submitButton = document.getElementById("achievmentForm");
-		console.log(submitButton);
-	}
-	function editAchievment() {
-
-	}
-																			//ajax get check
-																			//url get
-</script>

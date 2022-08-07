@@ -30,7 +30,8 @@ namespace LifeAchievments.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("AchievedIconTitle")
+                    b.Property<string>("AchievedIconName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Award")
@@ -53,9 +54,6 @@ namespace LifeAchievments.Migrations
 
                     b.Property<int>("State")
                         .HasColumnType("int");
-
-                    b.Property<string>("UnachievedIconTitle")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -81,6 +79,26 @@ namespace LifeAchievments.Migrations
                     b.HasIndex("AchievmentId");
 
                     b.ToTable("CategoryCollection");
+                });
+
+            modelBuilder.Entity("LifeAchievments.Models.Icon", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<byte[]>("Content")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("IconsCollection");
                 });
 
             modelBuilder.Entity("LifeAchievments.Models.Category", b =>

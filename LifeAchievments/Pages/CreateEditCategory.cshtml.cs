@@ -7,67 +7,48 @@ namespace LifeAchievments.Pages
 {
     public class CreateEditCategoryModel : PageModel
     {
-        public static int ChangingCategoryId { get; set; } = -1;
         [BindProperty(SupportsGet = true)]
         public string? NewCategoryName { get; set; }
-        private HashSet<Category> Categories { get; set; }
+        public List<Category> Categories { get; set; }
         private readonly ApplicationDbContext _context;
         public CreateEditCategoryModel(ApplicationDbContext context)
         {
             _context = context;
-            Categories = _context.CategoryCollection.ToHashSet();
-        }
-        public void OnGet()
-        {
-            string path = Request.QueryString.ToString();
-            //System.Diagnostics.Debug.WriteLine("-------------------"+path+ "-------------------" + path2);
-            string id = path.Split('=')[1];
-            int parsedId = int.Parse(id);
-            ChangingCategoryId = parsedId;
-            if (ChangingCategoryId == -1)
-            {
-                NewCategoryName = "New Category";
-            }
-            else
-            {
-                Category? category = GetCategoryById(ChangingCategoryId);
-                if (category == null) return;
-                NewCategoryName = category.Name;
-            }
+            Categories = _context.CategoryCollection.OrderBy(category => category.Name).ToList();
         }
         public IActionResult OnPost()
         {
-            if (string.IsNullOrWhiteSpace(NewCategoryName) || NewCategoryName == "New Category") return RedirectToPage(("/Achievments"));
-            if (Categories.Any(category => category.Name == NewCategoryName)) return RedirectToPage(("/Achievments"));
-
-            if (ChangingCategoryId == -1)
-                _context.CategoryCollection.Add(new Category() { Name = NewCategoryName });
-            else
-            {
-                Category? category = GetCategoryById(ChangingCategoryId);
-                if (category == null) return RedirectToPage(("/Achievments"));
-
-                _context.CategoryCollection.Where(cat => cat.Id == ChangingCategoryId).FirstOrDefault().Name = NewCategoryName;
-            }
-
+            if (string.IsNullOrWhiteSpace(NewCategoryName) || NewCategoryName == "New Category") return RedirectToPage(("/CreateEditCategory"));
+            if (Categories.Any(category => category.Name == NewCategoryName)) return RedirectToPage(("/CreateEditCategory"));
+            _context.CategoryCollection.Add(new Category() { Name = NewCategoryName });
             _context.SaveChanges();
-            Categories = _context.CategoryCollection.ToHashSet();
-            return RedirectToPage("/Achievments");
+            Categories = _context.CategoryCollection.OrderBy(category => category.Name).ToList();
+            return RedirectToPage("/CreateEditCategory");
         }
-        public IActionResult OnPostDelete()
+        public IActionResult OnGetDelete(int id)
         {
-            Category? category= _context.CategoryCollection.Where(cat => cat.Id == ChangingCategoryId).FirstOrDefault();
-            if (category == null) return RedirectToPage(("/Achievments"));
+            Category? category = _context.CategoryCollection.Where(cat => cat.Id == id).FirstOrDefault();
+            if (category == null) return NotFound();
             _context.CategoryCollection.Remove(category);
-
             _context.SaveChanges();
-            Categories = _context.CategoryCollection.ToHashSet();
-            return RedirectToPage("/Achievments");
+            Categories = _context.CategoryCollection.OrderBy(category => category.Name).ToList();
+            return new JsonResult("Deleted");
         }
-
-        private Category? GetCategoryById(int id)
+        public IActionResult OnGetRename(int id,string newName)
         {
-            return Categories.Where(cat => cat.Id == id).FirstOrDefault();
+            Category? category = _context.CategoryCollection.Where(cat => cat.Id == id).FirstOrDefault();
+            if (category == null) return NotFound();
+
+            if (string.IsNullOrWhiteSpace(newName) || newName == "New Category")
+                _context.CategoryCollection.Remove(category);
+
+            if (Categories.Any(category => category.Name == newName))
+                return new JsonResult("Exist");
+
+            category.Name = newName;
+            _context.SaveChanges();
+            Categories = _context.CategoryCollection.OrderBy(category=>category.Name).ToList();
+            return new JsonResult("Renamed");
         }
     }
 }

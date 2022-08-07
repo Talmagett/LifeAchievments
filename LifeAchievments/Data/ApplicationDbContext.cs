@@ -7,6 +7,7 @@ namespace LifeAchievments.Data
     {
         public DbSet<Achievment> AchievmentsCollection { get; set; }
         public DbSet<Category> CategoryCollection { get; set; }
+        public DbSet<Icon> IconsCollection { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {

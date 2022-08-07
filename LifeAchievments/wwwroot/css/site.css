@@ -23,3 +23,15 @@ body {
     width: 280px;
     margin-right: 20px;
 }
+
+.achievment-state-uncompleted {
+    filter: grayscale(100%);
+}
+
+.achievment-card {
+    border: 7px solid;
+    border-color: chartreuse;
+}
+.achievment-card-uncompleted {
+    border-color: darkgray;
+}

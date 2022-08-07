@@ -3,73 +3,125 @@
 @{
 }
 
-<body class="bg-dark text-danger">
-	<div class="text-left m-6 px-6 container w-75" style="max-width: 750px;">
+<div class="text-left m-6 px-6 container w-75" style="max-width: 1000px;">
 
+	@if (@Model.IsEdit)
+	{
+		<h1 class="text-center">
+			Edit
+		</h1>
+	}
+	else
+	{
+		<h1 class="text-center">
+			Create
+		</h1>
+	}
+
+	<form method="post" enctype="multipart/form-data">
+		<input type="hidden" asp-for="NewCreatingAchievment.Id" value="@Model.NewCreatingAchievment.Id" />
+		<div class="row">
+			<div class="col">
+				<div class="row mb-3">
+					<label for="inputName" class="col-sm-2 col-form-label text-white">Name</label>
+					<div class="col-sm-10">
+						<input class="form-control" id="inputName" type="text" asp-for="NewCreatingAchievment.Name" value="@Model.NewCreatingAchievment.Name" required />
+					</div>
+				</div>
+
+				<div class="row mb-3">
+					<label for="inputDescription" class="col-sm-2 col-form-label text-white">Description</label>
+					<div class="form-group col-sm-10">
+						<textarea class="form-control" id="inputDescription" rows="5" id="comment" asp-for="NewCreatingAchievment.Description" required style="height: 100px; resize:none;">
+					value="@Model.NewCreatingAchievment.Description" 
+					</textarea>
+					</div>
+				</div>
+
+				<div class="row mb-3">
+					<label for="inputAward" class="col-sm-2 col-form-label text-white">Award</label>
+					<div class="col-sm-10">
+						<input class="form-control" id="inputAward" type="text" asp-for="NewCreatingAchievment.Award" value="@Model.NewCreatingAchievment.Award" />
+					</div>
+				</div>
+
+				<div class="row mb-3">
+					<label for="inputComment" class="col-sm-2 col-form-label text-white">Comment</label>
+					<div class="col-sm-10">
+						<textarea class="form-control" id="inputComment" rows="4" type="text" asp-for="NewCreatingAchievment.Comment" style="height: 80px; resize:none;">
+					value="@Model.NewCreatingAchievment.Comment"
+					</textarea>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<img class="preview-image" src="~/images/@Model.NewCreatingAchievment.AchievedIconName" width="100%" alt="~/images/award" style="object-fit: contain; max-height: 174px" />
+				<div class="row-sm-4">
+					<label for="achievmentImage" class="text-white">Achievment Icon</label>
+					<select class="col-sm-4 form-select form-select-sm achievment-icon-select" aria-label=".form-select-sm example" asp-for="NewCreatingAchievment.AchievedIconName" onchange="setImage()">
+
+						@foreach (var icon in Model.Icons)
+						{
+							var IconName = icon.Name.Split('.')[0];
+							if (icon.Name == @Model.NewCreatingAchievment.AchievedIconName)
+							{
+								<option id="@icon.Id" value="@icon.Name" selected="selected">@IconName</option>
+							}
+							else
+							{
+								<option id="@icon.Id" value="@icon.Name">@IconName</option>
+							}
+						}
+					</select>
+				</div>
+
+				<div class="row-sm-2">
+					<label for="inputMaxAmount" class="text-white">MaxAmount</label>
+					<input class="form-control" id="inputMaxAmount" type="number" asp-for="NewCreatingAchievment.MaxAmount" value="@Model.NewCreatingAchievment.MaxAmount" min="0" />
+				</div>
+				<div class="row-sm-2">
+					<label for="inputProgress" class="text-white">Progress</label>
+					<input class="form-control" id="inputProgress" type="number" asp-for="NewCreatingAchievment.Progress" value="@Model.NewCreatingAchievment.Progress" min="0" />
+				</div>
+			</div>
+		</div>
+		<div>
+			<label for="addCcategoryId" class="form-label">Categories</label>
+			<button type="button" class="add-category-button btn btn-danger" id="addCcategoryId" onclick="addCategory()">+</button>
+			<div class="attached-categories">
+				<button type="button" class="btn btn-info" id="2">Art</button>
+				<button type="button" class="btn btn-info" id="3">Music</button>
+			</div>
+		</div>
 		@if (@Model.IsEdit)
 		{
-			<h1 class="text-center">
-				Edit
-			</h1>
+			<input class="btn btn-primary mt-1" type="submit" value="Edit" />
 		}
 		else
 		{
-			<h1 class="text-center">
-				Create
-			</h1>
+			<input class="btn btn-primary mt-1" type="submit" value="Create" />
 		}
+	</form>
+</div>
 
-		<form method="post" class="ml-5">
-
-			<div class="row mb-3">
-				<label for="inputName" class="col-sm-2 col-form-label text-white">Name</label>
-				<div class="col-sm-10">
-					<input class="form-control" id="inputName" type="text" asp-for="NewCreatingAchievment.Name" required />
-				</div>
-			</div>
-
-			<div class="row mb-3">
-				<label for="inputDescription" class="col-sm-2 col-form-label text-white">Description</label>
-
-				<div class="form-group col-sm-10">
-					<textarea class="form-control" id="inputDescription" rows="5" id="comment" asp-for="NewCreatingAchievment.Description" required style="height: 100px; resize:none;">
-					</textarea>
-				</div>
-			</div>
-
-			<div class="row mb-3">
-				<label for="inputAward" class="col-sm-2 col-form-label text-white">Award</label>
-				<div class="col-sm-10">
-					<input class="form-control" id="inputAward" type="text" asp-for="NewCreatingAchievment.Award" />
-				</div>
-			</div>
-
-			<div class="row mb-3">
-				<label for="inputComment" class="col-sm-2 col-form-label text-white">Comment</label>
-				<div class="col-sm-10">
-					<input class="form-control" id="inputComment" type="text" asp-for="NewCreatingAchievment.Comment" />
-				</div>
-			</div>
-
-			<div class="row mb-3 ml-5">
-				<div class="col-sm-2">
-					<label for="inputMaxAmount" class="text-white">MaxAmount</label>
-					<input class="form-control" id="inputMaxAmount" type="number" asp-for="NewCreatingAchievment.MaxAmount" />
-				</div>
-				<div class="col-sm-2">
-					<label for="inputProgress" class="text-white">Progress</label>
-					<input class="form-control" id="inputProgress" type="number" asp-for="NewCreatingAchievment.Progress" />
-				</div>
-				<div class="col-sm-4">
-					<label for="achievmentImage" class="text-white">Achievment Icon</label>
-					<input class="input-group mb-3" type="file" id="achievmentImage" name="img" accept="image/*" placeholder="Achieved Icon" />
-				</div>
-				<div class="col-sm-4">
-					<label for="unachievmentImage" class="text-white">Unachievment Icon</label>
-					<input class="input-group mb-3" type="file" id="unachievmentImage" name="img" accept="image/*" placeholder="Unachieved Icon" />
-				</div>
-			</div>
-			<button class="btn btn-primary mt-1" type="submit">Create</button>
-		</form>
-	</div>
-</body>
+<script type="text/javascript">
+	function setImage() {
+		var name = document.querySelector('.achievment-icon-select').value;
+		console.log(name)
+		document.querySelector('.preview-image').src = "images/" + name;
+	}
+	function addCategory() {
+		var newElement = document.createElement("button");
+		var text = document.createTextNode("Category");
+		newElement.appendChild(text);
+        newElement.id = "1";
+        newElement.type = "button";
+        newElement.className = "btn btn-info m-1";
+        newElement.addEventListener('click',()=> deleteCategory(newElement));
+		var element = document.querySelector('.attached-categories');
+		element.appendChild(newElement);
+	}
+	function deleteCategory(button) {
+        button.remove();
+	}
+</script>
