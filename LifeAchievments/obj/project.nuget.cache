@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "9iX9y/1V8VaQijsnXj0tXN6+KPuXMNBtqT533B7ErGfuLrMgD25NhKbdB15+KasMiNqjWkd75K6cUgQ2Br9bhg==",
+  "dgSpecHash": "luwXorixju6c2fIh5x1DY9Ce69qDsFSC/cxyR/SmoGTrCfu7a0a3qjimVM/vfzgg/GX+qtPWnGFMfmiZmAOnug==",
   "success": true,
   "projectFilePath": "D:\\WebProjects\\LifeAchievments\\LifeAchievments\\LifeAchievments.csproj",
   "expectedPackageFiles": [
@@ -35,6 +35,7 @@
     "C:\\Users\\Talgar\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.0\\microsoft.netcore.platforms.3.1.0.nupkg.sha512",
     "C:\\Users\\Talgar\\.nuget\\packages\\microsoft.win32.registry\\4.7.0\\microsoft.win32.registry.4.7.0.nupkg.sha512",
     "C:\\Users\\Talgar\\.nuget\\packages\\microsoft.win32.systemevents\\4.7.0\\microsoft.win32.systemevents.4.7.0.nupkg.sha512",
+    "C:\\Users\\Talgar\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
     "C:\\Users\\Talgar\\.nuget\\packages\\system.collections.immutable\\6.0.0\\system.collections.immutable.6.0.0.nupkg.sha512",
     "C:\\Users\\Talgar\\.nuget\\packages\\system.configuration.configurationmanager\\4.7.0\\system.configuration.configurationmanager.4.7.0.nupkg.sha512",
     "C:\\Users\\Talgar\\.nuget\\packages\\system.diagnostics.diagnosticsource\\6.0.0\\system.diagnostics.diagnosticsource.6.0.0.nupkg.sha512",

@@ -89,9 +89,6 @@ namespace LifeAchievments.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<byte[]>("Content")
-                        .HasColumnType("varbinary(max)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -104,13 +101,13 @@ namespace LifeAchievments.Migrations
             modelBuilder.Entity("LifeAchievments.Models.Category", b =>
                 {
                     b.HasOne("LifeAchievments.Models.Achievment", null)
-                        .WithMany("Categories")
+                        .WithMany("CategoriesList")
                         .HasForeignKey("AchievmentId");
                 });
 
             modelBuilder.Entity("LifeAchievments.Models.Achievment", b =>
                 {
-                    b.Navigation("Categories");
+                    b.Navigation("CategoriesList");
                 });
 #pragma warning restore 612, 618
         }
