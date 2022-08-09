@@ -15,7 +15,7 @@
 				@foreach (var category in Model.Categories)
 				{
 					<li class="row mb-1 d-flex">
-						<button class="btn btn-primary col" type="button" value="off" id="@category.Id" onclick="changeCategoryButtonValue(this)">
+						<button class="categoryBtn col text-white" type="button" value="off" id="@category.Id" onclick="changeCategoryButtonValue(this)" style="background-color: #008CBA">
 							@category.Name
 						</button>
 					</li>
@@ -26,8 +26,11 @@
 		<main class="container pb-3">
 			<div class="d-flex align-items-center justify-content-center align-content-between mb-4">
 				<h1 class="col">Achievments</h1>
-				<input class="form-control mx-5 searching-input" id="" type="text" placeholder="Search.." onkeyup="filterByName()">
-				<button class="btn btn-danger" onclick="createAchievment()">+</button>
+				<input class="form-control mx-5 searching-input" id="" type="text" placeholder="Search.." onkeyup="filter()">
+				@if (AchievmentsModel.CanEdit)
+				{
+					<button class="btn btn-danger" onclick="createAchievment()">+</button>
+				}
 			</div>
 			<div class="row row-cols-md-2 g-2 mx-1 " id="achievments">
 				@foreach (var achievment in Model.Achievments)
@@ -126,14 +129,25 @@
 							<input class="achievment-input-maxAmount mb-2" type="number" value="" readonly disabled />
 
 							<h6 class="text-black">Progress</h6>
-							<input class="achievment-input-progress" min="0" max="" type="number" value="" />
+							@{
+								var disable = "";
+								if (!AchievmentsModel.CanEdit)
+									disable = "readonly disabled";
+							}
+							<input class="achievment-input-progress" min="0" max="" type="number" value="" @disable />
 						</div>
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-danger delete-achievment-id align-self-start" onclick="deleteAchievment()">Delete</button>
-					<button type="button" class="btn btn-primary edit-achievment-id" onclick="editAchievment()">Edit</button>
-					<button class="btn btn-primary" onclick="saveProgressChanges()">Save</button>
+					@{
+						var disableFooter = "";
+						if (!AchievmentsModel.CanEdit)
+							disableFooter = "disabled";
+					}
+					<button type="button" class="btn btn-danger delete-achievment-id align-self-start" onclick="deleteAchievment()" @disableFooter>Delete</button>
+					<button type="button" class="btn btn-primary edit-achievment-id" onclick="editAchievment()" @disableFooter>Edit</button>
+					<button class="btn btn-primary" onclick="saveProgressChanges()" @disableFooter>Save</button>
+
 				</div>
 			</div>
 		</div>
