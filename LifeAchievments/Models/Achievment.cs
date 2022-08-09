@@ -5,18 +5,22 @@
         public int Id { get; set; }
         public string? Name { get; set; }
         public string? Description { get; set; }
-        public string? CategoriesIdName { get; set; }
-        public IEnumerable<int> CategoriesIDList
+        public string CategoriesIdName { get; set; } = "";
+        public IEnumerable<int>? CategoriesIDList
         {
             get
             {
-                string[] strings = CategoriesIdName.Split(',');
-                int[] ints = new int[strings.Length];
-                for (int i = 0; i < ints.Length; i++)
+                if (CategoriesIdName != "")
                 {
-                    ints[i] = int.Parse(strings[i]);
+                    string[] strings = CategoriesIdName.Split(',');
+                    int[] ints = new int[strings.Length];
+                    for (int i = 0; i < ints.Length; i++)
+                    {
+                        ints[i] = int.Parse(strings[i]);
+                    }
+                    return ints;
                 }
-                return ints;
+                else return null;
             }
         }
         public string? Award { get; set; }

@@ -85,7 +85,11 @@
 			<label for="addCcategoryId" class="form-label">Categories</label>
 			<button type="button" class="add-category-button btn btn-danger" data-bs-toggle="modal" data-bs-target="#categories-modal" id="addCcategoryId" onclick="showCategories()">+</button>
 			<div class="attached-categories">
-				@Model.NewCreatingAchievment.CategoriesIDList.Count()
+				@if (Model.AttachedCategories != null)
+					@foreach (var category in Model.AttachedCategories)
+					{
+						<button class="btn btn-info m-1" id="@category.Id" onclick="deleteCategory(this)">@category.Name</button>
+					}
 				<!--categories-->
 			</div>
 		</div>
@@ -126,73 +130,64 @@
 		console.log(name)
 		document.querySelector('.preview-image').src = "images/" + name;
 	}
-	// TODO: create on panel all accessable categories
 	const form = document.getElementById('myform');
 	const categoriesModal = document.getElementById('categories-modal');
-	//.onload
-@*
-    $(document).load(function() {
-    var categoriesInAchievment = [];
-    console.log(@Model.NewCreatingAchievment.Categories.Count);
-    @if (Model.NewCreatingAchievment.Categories!= null) {
-    @foreach (var category in Model.NewCreatingAchievment.Categories)
-    {
-    @:categoriesInAchievment.push({ id: "@category.Id", name: "@category.Name" });
-    }}
 
-    for (var i = 0; i < categoriesInAchievment.length; i++) {
-    addCategory(categoriesInAchievment.id, categoriesInAchievment.name);
-    }
+	@*   var categoriesInAchievment = new Array();
+		@if (Model.AttachedCategories!= null) {
+		@foreach (var category in Model.AttachedCategories)
+		{
+		@:categoriesInAchievment.push({ id: "@category.Id", name: "@category.Name" });
+		}}
+		*@
 
-    });
-    *@
 
-	function sendData() {
+		function sendData() {
+			var dataType = 'application/json; charset=utf-8';
 
-		var dataType = 'application/json; charset=utf-8';
+			var attachedCategories = document.querySelector('.attached-categories');
+			var categoryBtns = attachedCategories.getElementsByTagName("button");
 
-		var attachedCategories = document.querySelector('.attached-categories');
-		var categoryBtns = attachedCategories.getElementsByTagName("button");
-
-		var categories = new Array();
-		for (var i = 0; i < categoryBtns.length; i++) {
-			categories[i] = { Id: categoryBtns[i].id,Name: categoryBtns[i].innerText};
-		}
-		console.log(categories);
-
-		var data = {
-			Id: form.querySelector('.achievment-id').value,
-			Name: form.querySelector('.achievment-name').value,
-			Categories: categories,
-			Description: form.querySelector('.achievment-description').value,
-			Award: form.querySelector('.achievment-award').value,
-			Comment: form.querySelector('.achievment-comment').value,
-			MaxAmount: form.querySelector('.achievment-maxAmount').value,
-			Progress: form.querySelector('.achievment-progress').value,
-			AchievedIconName: form.querySelector('.achievment-icon-select').value
-		}
-
-		var postData = JSON.stringify(data);
-		console.log(postData);
-		$.ajax({
-			url: '/CreateEditAchievment?handler=SetData',
-			type: 'get',
-			data: { json: postData },
-			contentType: dataType,
-			dataType: "json",
-			beforeSend: function(xhr) {
-				xhr.setRequestHeader("XSRF-TOKEN",
-					$('input:hidden[name="__RequestVerificationToken"]').val());
-			},
-			success: function(response) {
-				console.log(response);
+			var categoriesName = "";
+			for (var i = 0; i < categoryBtns.length; i++) {
+				categoriesName += categoryBtns[i].id + (i == categoryBtns.length - 1 ? "" : ",");
 			}
-		}).done(function(msg) {
-			window.location.href = msg;
-			return false;
-		}).fail(function(jqXHR, status) {
-		});
-	}
+
+			console.log(categoriesName);
+
+			var data = {
+				Id: form.querySelector('.achievment-id').value,
+				Name: form.querySelector('.achievment-name').value,
+				CategoriesIdName: categoriesName,
+				Description: form.querySelector('.achievment-description').value,
+				Award: form.querySelector('.achievment-award').value,
+				Comment: form.querySelector('.achievment-comment').value,
+				MaxAmount: form.querySelector('.achievment-maxAmount').value,
+				Progress: form.querySelector('.achievment-progress').value,
+				AchievedIconName: form.querySelector('.achievment-icon-select').value
+			}
+
+			var postData = JSON.stringify(data);
+			console.log(postData);
+			$.ajax({
+				url: '/CreateEditAchievment?handler=SetData',
+				type: 'get',
+				data: { json: postData },
+				contentType: dataType,
+				dataType: "json",
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader("XSRF-TOKEN",
+						$('input:hidden[name="__RequestVerificationToken"]').val());
+				},
+				success: function(response) {
+					console.log(response);
+				}
+			}).done(function(msg) {
+				window.location.href = msg;
+				return false;
+			}).fail(function(jqXHR, status) {
+			});
+		}
 	//show remained categories
 	function showCategories() {
 		var attachedCategories = document.querySelector('.attached-categories');
@@ -216,7 +211,7 @@
 			}
 		}
 	}
-
+	
 	function addCategory(id, name) {
 		var newElement = document.createElement("button");
 		var text = document.createTextNode(name);//x
@@ -228,6 +223,7 @@
 		var element = document.querySelector('.attached-categories');
 		element.appendChild(newElement);
 	}
+
 	function deleteCategory(button) {
 		button.remove();
 	}

@@ -41,6 +41,41 @@ function filterByName() {
     }
 }
 
+function changeCategoryButtonValue(button) {
+    button.value = (button.value == "on") ? "off" : "on";
+    if (button.value == "on") {
+        button.style
+    }
+    filterByNameCategory();
+}
+function filterByNameCategory() {
+    const categoriesFilter = document.querySelector('.categories-filter')
+    var catsBtns = categoriesFilter.getElementsByTagName("button");
+
+    var catClasses = new Array();
+    for (var i = 0; i < catsBtns.length; i++) {
+        if (catsBtns[i].value == "on") {
+            catClasses.push("cat:" + catsBtns[i].id);
+        }
+    }
+    var btns = achievments.getElementsByTagName("button");
+
+    for (var i = 0; i < btns.length; i++) {
+        var hasAllCategories = true;
+        for (var j = 0; j < catClasses.length; j++) {
+            if (!btns[i].classList.contains(catClasses[j])) {
+                hasAllCategories = false;
+                break;
+            }
+        }
+        if (hasAllCategories) {
+            btns[i].style.display = "";
+        } else {
+            btns[i].style.display = "none";
+        }
+    }
+}
+
 /*   $("#achievments").filter(key=>key.
        function () {
        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
