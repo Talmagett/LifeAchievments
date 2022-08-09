@@ -60,3 +60,4 @@ D:\WebProjects\LifeAchievments\LifeAchievments\obj\Debug\net6.0\LifeAchievments.
 D:\WebProjects\LifeAchievments\LifeAchievments\obj\Debug\net6.0\LifeAchievments.genruntimeconfig.cache
 D:\WebProjects\LifeAchievments\LifeAchievments\obj\Debug\net6.0\ref\LifeAchievments.dll
 D:\WebProjects\LifeAchievments\LifeAchievments\bin\Debug\net6.0\Newtonsoft.Json.dll
+D:\WebProjects\LifeAchievments\LifeAchievments\bin\Debug\net6.0\web.config
