@@ -1,10 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using LifeAchievments.Data;
 
-var builder = WebApplication.CreateBuilder(new WebApplicationOptions
-{
-    EnvironmentName = Environments.Production
-});
+var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
