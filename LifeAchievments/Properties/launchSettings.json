@@ -40,6 +40,14 @@
         "ASPNETCORE_SHUTDOWNTIMEOUTSECONDS": "3"
       }
     },
+    "PROJECT_NAME": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "applicationUrl": "https://localhost:7223;http://localhost:5223",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Production"
+      }
+    },
     "EnvironmentsSample": {
       "commandName": "Project",
       "launchBrowser": true,
