@@ -3,6 +3,7 @@ using LifeAchievments;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 /*
@@ -12,7 +13,14 @@ Host.CreateDefaultBuilder(args)
     var port = Environment.GetEnvironmentVariable("PORT");
     webBuilder.UseUrls($"http://+:{port}");
 });*/
-
+Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.ConfigureKestrel(serverOptions =>
+                    {
+                        serverOptions.Listen(IPAddress.Any, Convert.ToInt32(Environment.GetEnvironmentVariable("PORT")));
+                    });
+                });
 
 var IsDevelopment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
 
