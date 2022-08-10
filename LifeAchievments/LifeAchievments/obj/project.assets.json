@@ -2111,7 +2111,6 @@
       "outputPath": "D:\\WebProjects\\LifeAchievments\\LifeAchievments\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "D:\\WebProjects\\LifeAchievments\\LifeAchievments\\NuGet.Config",
         "C:\\Users\\Talgar\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
