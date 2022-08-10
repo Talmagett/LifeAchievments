@@ -9,7 +9,6 @@ namespace LifeAchievments.Pages
     {
         public List<Category> Categories { get; set; }
         public List<Achievment> Achievments { get; set; }
-        public static bool CanEdit { get; private set; }
         private readonly ApplicationDbContext _context;
         public AchievmentsModel(ApplicationDbContext context)
         {
@@ -67,19 +66,6 @@ namespace LifeAchievments.Pages
             return new JsonResult(achievmentInDb.Progress);
         }
 
-        public IActionResult OnGetTryLogin(string password)
-        {
-            if (password == "Edition")
-            {
-                CanEdit = true;
-                return new JsonResult("Successful");
-            }
-            else
-            {
-                CanEdit = false;
-                return new JsonResult("Failed");
-            }
-        }
         private Achievment? GetAchievmentById(int id)
         {
             return _context.AchievmentsCollection.Where(achievment => achievment.Id == id).FirstOrDefault();
