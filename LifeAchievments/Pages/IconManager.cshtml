@@ -2,33 +2,34 @@
 @model LifeAchievments.Pages.IconManagerModel
 @{
 }
-<div class="row">
-	<div class="col">
-		<form method="post" enctype="multipart/form-data">
-			<input type="file" asp-for="FileUploadAchieved" />
-			<input type="submit" class="btn btn-danger" value="Upload" />
-		</form>
-	</div>
-	<div class="col d-flex">
-		<button class="btn btn-danger d-flex align-self-end align-bottom" onclick="deleteIcon()">Delete</button>
-		<img class="preview-image" id="1" src="~/images/award.png" width="100%" alt="~/images/award" style="object-fit: contain; max-height: 174px" />
-	</div>
-</div>
-
-@foreach (var icon in Model.Icons)
+@if (AchievmentsModel.CanEdit)
 {
-	var name = icon.Name.Split('.')[0];
-	<button class="btn btn-info col" id="@icon.Id" value="@icon.Name" onclick="setPreview(this.id,this.value)">@name</button>
+	<div class="row">
+		<div class="col">
+			<form method="post" enctype="multipart/form-data">
+				<input type="file" asp-for="FileUploadAchieved" />
+				<input type="submit" class="btn btn-danger" value="Upload" />
+			</form>
+		</div>
+		<div class="col d-flex">
+			<button class="btn btn-danger d-flex align-self-end align-bottom" onclick="deleteIcon()">Delete</button>
+			<img class="preview-image" id="1" src="~/images/award.png" width="100%" alt="~/images/award" style="object-fit: contain; max-height: 174px" />
+		</div>
+	</div>
+
+	@foreach (var icon in Model.Icons)
+	{
+		var name = icon.Name.Split('.')[0];
+		<button class="btn btn-info col" id="@icon.Id" value="@icon.Name" onclick="setPreview(this.id,this.value)">@name</button>
+	}
 }
 <script type="text/javascript">
-
 	function setPreview(id, name) {
 		document.querySelector('.preview-image').id = id;
 		document.querySelector('.preview-image').src = "images/" + name;
 	}
 
-	function deleteIcon()
-	{
+	function deleteIcon() {
 		var id = document.querySelector('.preview-image').id;
 		$.ajax({
 			url: '/IconManager?handler=Delete',

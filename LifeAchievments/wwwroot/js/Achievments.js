@@ -17,61 +17,51 @@ achievmentModal.addEventListener('show.bs.modal', event => {
     const categoryId = button.getAttribute('data-bs-whatever')
     fillModalData(categoryId);
 })
-console.log(document.getElementById('achievment-modal'));;
-console.log(achievmentModal);;
 
+function changeCategoryButtonValue(button) {
+    if (button.value == "on") {
+        button.style.backgroundColor = "#008CBA";
+        button.value = "off";
+    } else {
+        button.style.backgroundColor = "#f44336";
+        button.value = "on";
+    }
+    filter();
+}
+function filter() {
+    var title, i, j, txtValue;
 
-function filterByName() {
     var value = searchBar.value.toLowerCase();
     var achievments = document.getElementById('achievments');
 
-    var title, i, txtValue;
-    var btns = achievments.getElementsByTagName("button");
-
-    for (i = 0; i < btns.length; i++) {
-        title = btns[i].querySelector('.card-title');
-        if (title) {
-            txtValue = title.textContent || title.innerText;
-            if (txtValue.toLowerCase().indexOf(value) > -1) {
-                btns[i].style.display = "";
-            } else {
-                btns[i].style.display = "none";
-            }
-        }
-    }
-}
-
-function changeCategoryButtonValue(button) {
-    button.value = (button.value == "on") ? "off" : "on";
-    if (button.value == "on") {
-        button.style
-    }
-    filterByNameCategory();
-}
-function filterByNameCategory() {
     const categoriesFilter = document.querySelector('.categories-filter')
     var catsBtns = categoriesFilter.getElementsByTagName("button");
 
     var catClasses = new Array();
-    for (var i = 0; i < catsBtns.length; i++) {
+    for (i = 0; i < catsBtns.length; i++) {
         if (catsBtns[i].value == "on") {
             catClasses.push("cat:" + catsBtns[i].id);
         }
     }
+
     var btns = achievments.getElementsByTagName("button");
 
-    for (var i = 0; i < btns.length; i++) {
+    for (i = 0; i < btns.length; i++) {
         var hasAllCategories = true;
-        for (var j = 0; j < catClasses.length; j++) {
+        for (j = 0; j < catClasses.length; j++) {
             if (!btns[i].classList.contains(catClasses[j])) {
                 hasAllCategories = false;
                 break;
             }
         }
-        if (hasAllCategories) {
-            btns[i].style.display = "";
-        } else {
-            btns[i].style.display = "none";
+        title = btns[i].querySelector('.card-title');
+        if (title) {
+            txtValue = title.textContent || title.innerText;
+            if (txtValue.toLowerCase().indexOf(value) > -1 && hasAllCategories) {
+                btns[i].style.display = "";
+            } else {
+                btns[i].style.display = "none";
+            }
         }
     }
 }
@@ -107,7 +97,6 @@ function fillModalData(id) {
             achievmentModal.querySelector('.modal-body .achievment-input-progress').value = response.progress
             achievmentModal.querySelector('.modal-body .achievment-input-progress').setAttribute('max', response.maxAmount != 0 ? response.maxAmount : "")
             var imageName = "images/" + response.achievedIconName;
-            console.log(imageName);
             achievmentModal.querySelector('.modal-body .achievment-icon').src = imageName
         }
     }).done(function (msg) {
@@ -136,7 +125,6 @@ function deleteAchievment() {
             //card.
         }
     }).done(function (msg) {
-        console.log("response" + msg)
         window.location.reload();
         return false;
     }).fail(function (jqXHR, status) {
@@ -167,7 +155,6 @@ function saveProgressChanges() {
         success: function (response) {
         }
     }).done(function (msg) {
-        console.log("response" + msg)
         window.location.reload();
         return false;
     }).fail(function (jqXHR, status) {

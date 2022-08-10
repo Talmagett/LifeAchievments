@@ -6,30 +6,23 @@ using Npgsql;
 using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
-/*
+
 Host.CreateDefaultBuilder(args)
 .ConfigureWebHostDefaults(webBuilder =>
 {
     var port = Environment.GetEnvironmentVariable("PORT");
     webBuilder.UseUrls($"http://+:{port}");
-});*/
-Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.ConfigureKestrel(serverOptions =>
-                    {
-                        serverOptions.Listen(IPAddress.Any, Convert.ToInt32(Environment.GetEnvironmentVariable("PORT")));
-                    });
-                });
+});
 
 var IsDevelopment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
 
-var connectionString = IsDevelopment ? builder.Configuration.GetConnectionString("DefaultConnection") : Extenstions.GetHerokuConnectionString();
+var connectionString =  IsDevelopment ? builder.Configuration.GetConnectionString("DefaultConnection") : Extenstions.GetHerokuConnectionString();
 System.Diagnostics.Debug.WriteLine(Extenstions.GetHerokuConnectionString());
 // Add services to the container.
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    options.UseNpgsql(connectionString);
+    options.UseSqlServer(connectionString);
+    //options.UseNpgsql(connectionString);
 });
 builder.Services.AddRazorPages(options =>
 {

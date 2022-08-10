@@ -2111,6 +2111,7 @@
       "outputPath": "D:\\WebProjects\\LifeAchievments\\LifeAchievments\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
+        "D:\\WebProjects\\LifeAchievments\\LifeAchievments\\NuGet.Config",
         "C:\\Users\\Talgar\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -2195,7 +2196,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.302\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.303\\RuntimeIdentifierGraph.json"
       }
     }
   }
