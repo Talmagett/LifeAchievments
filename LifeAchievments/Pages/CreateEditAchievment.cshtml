@@ -1,0 +1,234 @@
+﻿@page
+@model LifeAchievments.Pages.CreateEditAchievmentModel
+@{
+}
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+@if (AchievmentsModel.CanEdit && @Model.NewCreatingAchievment != null)
+{
+	<div class="text-left m-6 px-6 container w-75" style="max-width: 1000px;">
+
+		@if (@Model.IsEdit)
+		{
+			<h1 class="text-center">
+				Edit
+			</h1>
+		}
+		else
+		{
+			<h1 class="text-center">
+				Create
+			</h1>
+		}
+
+		<form method="post" enctype="multipart/form-data" id="myform">
+			<input type="hidden" class="achievment-id" asp-for="NewCreatingAchievment.Id" value="@Model.NewCreatingAchievment.Id" />
+			<div class="row">
+				<div class="col">
+					<div class="row mb-3">
+						<label for="inputName" class="col-sm-2 col-form-label text-white">Name</label>
+						<div class="col-sm-10">
+							<input class="form-control achievment-name" id="inputName" type="text" value="@Model.NewCreatingAchievment.Name" required />
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<label for="inputDescription" class="col-sm-2 col-form-label text-white">Description</label>
+						<div class="form-group col-sm-10">
+							<textarea class="form-control achievment-description" id="inputDescription" rows="5" value="@Model.NewCreatingAchievment.Description" required style="height: 100px; resize:none;"></textarea>
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<label for="inputAward" class="col-sm-2 col-form-label text-white">Award</label>
+						<div class="col-sm-10">
+							<input class="form-control achievment-award" id="inputAward" type="text" value="@Model.NewCreatingAchievment.Award" />
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<label for="inputComment" class="col-sm-2 col-form-label text-white">Comment</label>
+						<div class="col-sm-10">
+							<textarea class="form-control achievment-comment" id="inputComment" rows="4" type="text" value="@Model.NewCreatingAchievment.Comment" style="height: 80px; resize:none;"></textarea>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<img class="preview-image" src="~/images/@Model.NewCreatingAchievment.AchievedIconName" width="100%" alt="~/images/award" style="object-fit: contain; max-height: 174px" />
+					<div class="row-sm-4">
+						<label for="achievmentImage" class="text-white">Achievment Icon</label>
+						<select class="col-sm-4 form-select form-select-sm achievment-icon-select" aria-label=".form-select-sm example" onchange="setImage()">
+
+							@foreach (var icon in Model.Icons)
+							{
+								var IconName = icon.Name.Split('.')[0];
+								if (icon.Name == @Model.NewCreatingAchievment.AchievedIconName)
+								{
+									<option id="@icon.Id" value="@icon.Name" selected="selected">@IconName</option>
+								}
+								else
+								{
+									<option id="@icon.Id" value="@icon.Name">@IconName</option>
+								}
+							}
+						</select>
+					</div>
+
+					<div class="row-sm-2">
+						<label for="inputMaxAmount" class="text-white">MaxAmount</label>
+						<input class="form-control achievment-maxAmount" id="inputMaxAmount" type="number" value="@Model.NewCreatingAchievment.MaxAmount" min="0" />
+					</div>
+					<div class="row-sm-2">
+						<label for="inputProgress" class="text-white">Progress</label>
+						<input class="form-control achievment-progress" id="inputProgress" type="number" value="@Model.NewCreatingAchievment.Progress" min="0" />
+					</div>
+				</div>
+			</div>
+			<div>
+				<label for="addCcategoryId" class="form-label">Categories</label>
+				<button type="button" class="add-category-button btn btn-danger" data-bs-toggle="modal" data-bs-target="#categories-modal" id="addCcategoryId" onclick="showCategories()">+</button>
+				<div class="attached-categories">
+					@if (Model.AttachedCategories != null)
+						@foreach (var category in Model.AttachedCategories)
+						{
+							<button class="btn btn-info m-1" id="@category.Id" onclick="deleteCategory(this)">@category.Name</button>
+						}
+					<!--categories-->
+				</div>
+			</div>
+			@if (@Model.IsEdit)
+			{
+				<button class="btn btn-primary mt-1" type="button" onclick="sendData()">Edit</button>
+			}
+			else
+			{
+				<button class="btn btn-primary mt-1" type="button" onclick="sendData()">Create</button>
+			}
+		</form>
+
+		<div class="modal fade" id="categories-modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title text-black">Categories</h4>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						@foreach (var category in Model.Categories)
+						{
+							<button class="btn btn-info m-1 avalaible-category:@category.Id" data-bs-dismiss="modal" id="@category.Id" value="@category.Name" onclick="addCategory(id,value)">@category.Name</button>
+						}
+					</div>
+					<div class="modal-footer">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+}
+<script type="text/javascript" defer>
+	jQuery.ajaxSettings.traditional = true;
+	function setImage() {
+		var name = document.querySelector('.achievment-icon-select').value;
+		console.log(name)
+		document.querySelector('.preview-image').src = "images/" + name;
+	}
+	const form = document.getElementById('myform');
+	const categoriesModal = document.getElementById('categories-modal');
+
+	@*   var categoriesInAchievment = new Array();
+		@if (Model.AttachedCategories!= null) {
+		@foreach (var category in Model.AttachedCategories)
+		{
+		@:categoriesInAchievment.push({ id: "@category.Id", name: "@category.Name" });
+		}}
+		*@
+
+
+		function sendData() {
+			var dataType = 'application/json; charset=utf-8';
+
+			var attachedCategories = document.querySelector('.attached-categories');
+			var categoryBtns = attachedCategories.getElementsByTagName("button");
+
+			var categoriesName = "";
+			for (var i = 0; i < categoryBtns.length; i++) {
+				categoriesName += categoryBtns[i].id + (i == categoryBtns.length - 1 ? "" : ",");
+			}
+
+			console.log(categoriesName);
+
+			var data = {
+				Id: form.querySelector('.achievment-id').value,
+				Name: form.querySelector('.achievment-name').value,
+				CategoriesIdName: categoriesName,
+				Description: form.querySelector('.achievment-description').value,
+				Award: form.querySelector('.achievment-award').value,
+				Comment: form.querySelector('.achievment-comment').value,
+				MaxAmount: form.querySelector('.achievment-maxAmount').value,
+				Progress: form.querySelector('.achievment-progress').value,
+				AchievedIconName: form.querySelector('.achievment-icon-select').value
+			}
+
+			var postData = JSON.stringify(data);
+			console.log(postData);
+			$.ajax({
+				url: '/CreateEditAchievment?handler=SetData',
+				type: 'get',
+				data: { json: postData },
+				contentType: dataType,
+				dataType: "json",
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader("XSRF-TOKEN",
+						$('input:hidden[name="__RequestVerificationToken"]').val());
+				},
+				success: function(response) {
+					console.log(response);
+				}
+			}).done(function(msg) {
+				window.location.href = msg;
+				return false;
+			}).fail(function(jqXHR, status) {
+			});
+		}
+	//show remained categories
+	function showCategories() {
+		var attachedCategories = document.querySelector('.attached-categories');
+		var avalaibleCategories = categoriesModal.querySelector('.modal-body');
+
+		var attachedCategoryId, i, txtValue;
+		var btns = attachedCategories.getElementsByTagName("button");
+		var categoryBtns = avalaibleCategories.getElementsByTagName("button");
+
+		for (i = 0; i < categoryBtns.length; i++) {
+			attachedCategoryId = categoryBtns[i].id;
+
+			var result = $.grep(btns, function(e) {
+				return e.id == attachedCategoryId;
+			});
+
+			if (result.length == 0) {
+				categoryBtns[i].style.display = "";
+			} else if (result.length == 1) {
+				categoryBtns[i].style.display = "none";
+			}
+		}
+	}
+
+	function addCategory(id, name) {
+		var newElement = document.createElement("button");
+		var text = document.createTextNode(name);//x
+		newElement.appendChild(text);
+		newElement.id = id;
+		newElement.type = "button";
+		newElement.className = "btn btn-info m-1";
+		newElement.addEventListener('click', () => deleteCategory(newElement));
+		var element = document.querySelector('.attached-categories');
+		element.appendChild(newElement);
+	}
+
+	function deleteCategory(button) {
+		button.remove();
+	}
+</script>
+

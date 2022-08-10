@@ -1,0 +1,50 @@
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+    background-color: #212121;
+    color: white;
+}
+
+.sidebar {
+    width: 280px;
+    margin-right: 20px;
+}
+
+.achievment-state-uncompleted {
+    filter: grayscale(100%);
+}
+
+.achievment-card {
+    border: 7px solid;
+    border-color: chartreuse;
+}
+
+.achievment-card-uncompleted {
+    border-color: darkgray;
+}
+
+.categoryBtn {
+    border: none;
+    color: white;
+    padding: 4px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 4px;
+    border: 1px solid #000000;
+    cursor: pointer;
+}

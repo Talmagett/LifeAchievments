@@ -1,0 +1,155 @@
+﻿@page
+@model LifeAchievments.Pages.AchievmentsModel
+@{
+}
+
+<script src="~/js/Achievments.js" defer></script></>
+
+<body>
+	<div class="d-flex container pb-3">
+		<div class="container sidebar">
+			<div class="d-flex align-items-center justify-content-center align-content-between p-0">
+				<h3 class="col">Categories</h3>
+			</div>
+			<ul class="mt-4 categories-filter">
+				@foreach (var category in Model.Categories)
+				{
+					<li class="row mb-1 d-flex">
+						<button class="categoryBtn col text-white" type="button" value="off" id="@category.Id" onclick="changeCategoryButtonValue(this)" style="background-color: #008CBA">
+							@category.Name
+						</button>
+					</li>
+				}
+			</ul>
+		</div>
+
+		<main class="container pb-3">
+			<div class="d-flex align-items-center justify-content-center align-content-between mb-4">
+				<h1 class="col">Achievments</h1>
+				<input class="form-control mx-5 searching-input" id="" type="text" placeholder="Search.." onkeyup="filter()">
+				@if (AchievmentsModel.CanEdit)
+				{
+					<button class="btn btn-danger" onclick="createAchievment()">+</button>
+				}
+			</div>
+			<div class="row row-cols-md-2 g-2 mx-1 " id="achievments">
+				@foreach (var achievment in Model.Achievments)
+				{
+					<div class="col-md-2" style="width: 12rem;">
+						@{
+							var cardClassName = "card h-100 w-100 bg-white achievment-card ";
+							if (@achievment.State == Models.State.Uncompleted)
+								cardClassName += " achievment-card-uncompleted";
+							if (achievment.CategoriesIDList != null)
+								foreach (var item in achievment.CategoriesIDList)
+								{
+									cardClassName += " cat:" + item;
+								}
+						}
+						<button class=@cardClassName id="cardId:@achievment.Id" data-bs-toggle="modal" data-bs-target="#achievment-modal" data-bs-whatever="@achievment.Id" asp-page-handler="@achievment.Id">
+							@{
+								var iconClassName = "card-img-top";
+								if (@achievment.State == Models.State.Uncompleted)
+									iconClassName += " achievment-state-uncompleted";
+								<img src="~/images/@achievment.AchievedIconName" class=@iconClassName + width="100%" alt="~/images/award" style="object-fit: contain; max-height: 174px" />
+							}
+							<div class="card-body bg-dark">
+								<h5 class="card-title">@achievment.Name</h5>
+								@if (@achievment.State == Models.State.Uncompleted)
+								{
+									@if (@achievment.MaxAmount > 1)
+									{
+										var progress = @achievment.Progress * 100 / @achievment.MaxAmount;
+										<div>
+											<div class="progress mr-4">
+												<div class="progress-bar" role="progressbar" aria-label="Basic example" style="width: @progress%" aria-valuenow="@progress" aria-valuemin="0" aria-valuemax="100">
+												</div>
+											</div>
+											<div class="text-center text-primary">
+												@achievment.Progress/@achievment.MaxAmount
+											</div>
+										</div>
+									}
+									else
+									{
+										<div class="text-center text-secondary">
+											Uncompleted
+										</div>
+									}
+								}
+								else
+								@if (@achievment.State == Models.State.Incremental)
+								{
+									<div class="text-center text-warning">
+										@achievment.Progress
+									</div>
+								}
+								else
+								{
+									<div class="text-center text-success">
+										Completed
+									</div>
+								}
+							</div>
+						</button>
+					</div>
+				}
+			</div>
+		</main>
+	</div>
+
+	<div class="modal fade" id="achievment-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title text-black"></h4>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body row m-1">
+					<div class="col m-1">
+						<div class="row mb-1">
+							<textarea class="form-control achievment-input-description" rows="5" type="text" readonly disabled style="height: 100px; resize:none;">
+							</textarea>
+						</div>
+						<div class="row mb-1">
+							<input class="form-control achievment-input-award" type="text" value="Disabled readonly input" aria-label="Disabled input example" disabled readonly>
+						</div>
+						<div class="row mb-1">
+							<textarea class="form-control achievment-input-comment" rows="4" type="text" readonly disabled style="height: 80px; resize:none;">
+							</textarea>
+						</div>
+
+					</div>
+					<div class="col-4 m-1">
+						<div class="row">
+							<img src="~/images/award.png" class="achievment-icon mx-auto" alt="" width="100%" style="object-fit: contain; max-height: 174px">
+						</div>
+						<div class="row">
+							<h6 class="text-black">Max amount</h6>
+							<input class="achievment-input-maxAmount mb-2" type="number" value="" readonly disabled />
+
+							<h6 class="text-black">Progress</h6>
+							@{
+								var disable = "";
+								if (!AchievmentsModel.CanEdit)
+									disable = "readonly disabled";
+							}
+							<input class="achievment-input-progress" min="0" max="" type="number" value="" @disable />
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					@{
+						var disableFooter = "";
+						if (!AchievmentsModel.CanEdit)
+							disableFooter = "disabled";
+					}
+					<button type="button" class="btn btn-danger delete-achievment-id align-self-start" onclick="deleteAchievment()" @disableFooter>Delete</button>
+					<button type="button" class="btn btn-primary edit-achievment-id" onclick="editAchievment()" @disableFooter>Edit</button>
+					<button class="btn btn-primary" onclick="saveProgressChanges()" @disableFooter>Save</button>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</body>

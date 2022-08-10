@@ -1,0 +1,97 @@
+﻿@page
+@model LifeAchievments.Pages.CreateEditCategoryModel
+@{
+}
+
+<div class="container">
+	<div class="d-flex align-items-center justify-content-center align-content-between">
+		<form method="post" class="row">
+			<input class="col" type="text" asp-for="NewCategoryName" value="@Model.NewCategoryName" size="50"/>
+			<button class="btn btn-danger mx-4 col-2" type="submit">Add</button>
+		</form>
+	</div>
+	<div class="m-2">
+		@foreach (var category in Model.Categories)
+		{
+			<button class="btn btn-danger m-1" data-bs-toggle="modal" data-bs-target="#category-modal" data-bs-whatever="@category.Id">@category.Name</button>
+		}
+	</div>
+
+	<div class="modal fade" id="category-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title text-black">Editing</h4>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<label for="renamingInputId" class="text-black">Enter new name</label>
+					<input class="renaming-input m-4" id="renamingInputId" type="text" value="" />
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger delete-category-id" onclick="deleteCategory()">Delete</button>
+					<button class="btn btn-primary" onclick="renameCategory()">Rename</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	const categoryModal = document.getElementById('category-modal')
+
+	categoryModal.addEventListener('show.bs.modal', event => {
+		const button = event.relatedTarget
+		const categoryId = button.getAttribute('data-bs-whatever')
+		const categoryName = button.innerHTML
+
+		categoryModal.querySelector(".renaming-input").setAttribute("id", categoryId)
+		categoryModal.querySelector(".renaming-input").value = categoryName
+	})
+
+	function deleteCategory() {
+		var id = categoryModal.querySelector(".renaming-input").getAttribute("id");
+		$.ajax({
+			url: '/CreateEditCategory?handler=Delete',
+			type: 'get',
+			data: {
+				"id": id
+			},
+			beforeSend: function(xhr) {
+				xhr.setRequestHeader("XSRF-TOKEN",
+					$('input:hidden[name="__RequestVerificationToken"]').val());
+			},
+			success: function(response) {
+			}
+		}).done(function(msg) {
+			window.location.reload();
+			return false;
+		}).fail(function(jqXHR, status) {
+		});
+	}
+
+
+	function renameCategory() {
+		var id = categoryModal.querySelector(".renaming-input").getAttribute("id");
+		var newName = categoryModal.querySelector(".renaming-input").value;
+        console.log(newName);
+		$.ajax({
+			url: '/CreateEditCategory?handler=Rename',
+			type: 'get',
+			data: {
+				"id": id,
+				"newName": newName
+			},
+			beforeSend: function(xhr) {
+				xhr.setRequestHeader("XSRF-TOKEN",
+					$('input:hidden[name="__RequestVerificationToken"]').val());
+			},
+			success: function(response) {
+			}
+		}).done(function(msg) {
+			window.location.reload();
+			return false;
+		}).fail(function(jqXHR, status) {
+		});
+	}
+</script>
