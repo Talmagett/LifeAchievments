@@ -1,4 +1,3 @@
-D:\WebProjects\LifeAchievments\LifeAchievments\bin\Release\net6.0\web.config
 D:\WebProjects\LifeAchievments\LifeAchievments\bin\Release\net6.0\appsettings.Development.json
 D:\WebProjects\LifeAchievments\LifeAchievments\bin\Release\net6.0\appsettings.json
 D:\WebProjects\LifeAchievments\LifeAchievments\bin\Release\net6.0\LifeAchievments.staticwebassets.runtime.json
