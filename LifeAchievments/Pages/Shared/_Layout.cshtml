@@ -36,6 +36,7 @@
 						}
 						else
 						{
+							<button class="btn btn-info" onclick="Backup()">Backup</button>
 							<button class="btn btn-primary" onclick="Logout()">Logout</button>
 						}
 					</div>
@@ -90,6 +91,30 @@
 			tryLogin();
 		}
 	});
+
+	function Backup() {
+		$.ajax({
+			url: '/Achievments?handler=TryBackup',
+			type: 'get',
+			beforeSend: function(xhr) {
+				xhr.setRequestHeader("XSRF-TOKEN",
+					$('input:hidden[name="__RequestVerificationToken"]').val());
+			},
+			success: function(response) {
+			}
+		}).done(function(msg) {
+			const element = document.createElement("a");
+			element.href = 'data:text/plain;charset=utf-8,'+encodeURIComponent(msg);
+			element.download = "Achievments.txt";
+            element.style.display = 'none';
+			document.body.appendChild(element);
+			element.click();
+			document.body.removeChild(element);
+		}).fail(function(jqXHR, status) {
+			console.log("failed");
+		});
+	}
+
 	function Logout() {
 		$.ajax({
 			url: '/Achievments?handler=TryLogin',
