@@ -58,9 +58,9 @@ function filter() {
         if (title) {
             txtValue = title.textContent || title.innerText;
             if (txtValue.toLowerCase().indexOf(value) > -1 && hasAllCategories) {
-                btns[i].style.display = "";
+                btns[i].parentElement.parentElement.style.display = "";
             } else {
-                btns[i].style.display = "none";
+                btns[i].parentElement.parentElement.style.display = "none";
             }
         }
     }

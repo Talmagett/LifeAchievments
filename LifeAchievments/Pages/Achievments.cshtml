@@ -32,21 +32,19 @@
 					<button class="btn btn-danger" onclick="createAchievment()">+</button>
 				}
 			</div>
-			<div class="row row-cols-md-2 g-2 mx-1 " id="achievments">
+			<div class="row row-cols-md-2 g-2 mx-1" id="achievments">
 				@foreach (var achievment in Model.Achievments)
 				{
-					<div class="col-md-2" style="width: 12rem;">
-						@{
-							var cardClassName = "card h-100 w-100 bg-white achievment-card ";
-							if (@achievment.State == Models.State.Uncompleted)
-								cardClassName += " achievment-card-uncompleted";
-							if (achievment.CategoriesIDList != null)
-								foreach (var item in achievment.CategoriesIDList)
-								{
-									cardClassName += " cat:" + item;
-								}
+					var cardClassName = "card bg-white achievment-card ";
+					if (@achievment.State == Models.State.Uncompleted)
+						cardClassName += " achievment-card-uncompleted";
+					if (achievment.CategoriesIDList != null)
+						foreach (var item in achievment.CategoriesIDList)
+						{
+							cardClassName += " cat:" + item;
 						}
-						<button class=@cardClassName id="cardId:@achievment.Id" data-bs-toggle="modal" data-bs-target="#achievment-modal" data-bs-whatever="@achievment.Id" asp-page-handler="@achievment.Id">
+					<button class="col-md-2 mx-1 @cardClassName id="cardId:@achievment.Id" style="width: 12rem;" data-bs-toggle="modal" data-bs-target="#achievment-modal" data-bs-whatever="@achievment.Id" asp-page-handler="@achievment.Id">
+						<div class="h-100 w-100">
 							@{
 								var iconClassName = "card-img-top";
 								if (@achievment.State == Models.State.Uncompleted)
@@ -91,8 +89,8 @@
 									</div>
 								}
 							</div>
-						</button>
-					</div>
+						</div>
+					</button>
 				}
 			</div>
 		</main>
